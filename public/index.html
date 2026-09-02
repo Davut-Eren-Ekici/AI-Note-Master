@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Note Master - Akıllı Ders Asistanı</title>
+    <meta name="description" content="Ders notlarınızı yapay zekâ ile saniyeler içinde özetleyin, çalışma kartları ve test soruları oluşturun.">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>📚 AI Note Master</h1>
+        <p>Ders notlarını yapıştır; yapay zekâ özetlesin, flashcard ve test hazırlasın!</p>
+    </header>
+
+    <main class="container">
+        <!-- Not Giriş Alanı -->
+        <section class="input-section">
+            <label for="noteInput">Ders Notlarınız / Metniniz:</label>
+            <textarea id="noteInput" rows="10" placeholder="Ders notlarınızı, kitap özetinizi veya çalışmak istediğiniz metni buraya yapıştırın..."></textarea>
+            
+            <div class="button-group">
+                <button id="btnSummarize" class="btn primary">📝 Özet Çıkar</button>
+                <button id="btnFlashcards" class="btn secondary">🎴 Flashcard Üret</button>
+                <button id="btnQuestions" class="btn accent">❓ Soru Bankası Oluştur</button>
+            </div>
+        </section>
+
+        <!-- Yükleniyor Göstergesi -->
+        <div id="loading" class="loading hidden">
+            <div class="spinner"></div>
+            <p id="loadingText">Yapay zekâ notlarınızı analiz ediyor...</p>
+        </div>
+
+        <!-- Sonuç Ekranı -->
+        <section id="resultSection" class="result-section hidden">
+            <h2 id="resultTitle">Analiz Sonucu</h2>
+            <div id="resultContent" class="result-content"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 Davut Eren Ekici — Powered by Gemini AI</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
