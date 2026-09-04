@@ -34,7 +34,7 @@ async function sendRequest(endpoint, message) {
             resultSection.classList.remove('hidden');
             return data;
         } else {
-            alert("Hata: " + data.error);
+            alert("API Hatası: " + data.error);
         }
     } catch (err) {
         console.error(err);
@@ -46,7 +46,7 @@ async function sendRequest(endpoint, message) {
 
 btnSummarize.addEventListener('click', async () => {
     const data = await sendRequest('/api/summarize', 'Yapay zekâ ders notunu özetliyor...');
-    if (data) {
+    if (data && data.summary) {
         resultTitle.innerText = "📝 Ders Notu Özeti";
         resultContent.innerHTML = `<div class="summary-text">${data.summary.replace(/\n/g, '<br>')}</div>`;
     }
@@ -54,7 +54,7 @@ btnSummarize.addEventListener('click', async () => {
 
 btnFlashcards.addEventListener('click', async () => {
     const data = await sendRequest('/api/flashcards', 'Çalışma kartları (Flashcards) hazırlanıyor...');
-    if (data) {
+    if (data && data.flashcards) {
         resultTitle.innerText = "🎴 Çalışma Kartları (Cevabı görmek için karta tıkla)";
         
         let cardsHTML = '<div class="flashcard-grid">';
@@ -75,7 +75,7 @@ btnFlashcards.addEventListener('click', async () => {
 
 btnQuestions.addEventListener('click', async () => {
     const data = await sendRequest('/api/questions', 'Test soruları oluşturuluyor...');
-    if (data) {
+    if (data && data.questions) {
         resultTitle.innerText = "❓ Soru Bankası";
         
         let questionsHTML = '<div class="questions-list">';
