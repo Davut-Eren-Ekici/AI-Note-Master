@@ -13,7 +13,7 @@ async function sendRequest(endpoint, message) {
     const noteText = noteInput.value.trim();
 
     if (!noteText) {
-        alert("Lütfen önce bir ders notu yapıştırın!");
+        alert("Lütfen önce bir ders notu girin.");
         return;
     }
 
@@ -34,28 +34,32 @@ async function sendRequest(endpoint, message) {
             resultSection.classList.remove('hidden');
             return data;
         } else {
-            alert("API Hatası: " + data.error);
+            alert("Hata: " + data.error);
         }
     } catch (err) {
         console.error(err);
-        alert("Sunucuyla bağlantı kurulamadı!");
+        alert("Sunucuyla bağlantı kurulamadı.");
     } finally {
         loading.classList.add('hidden');
     }
 }
 
 btnSummarize.addEventListener('click', async () => {
-    const data = await sendRequest('/api/summarize', 'Yapay zekâ ders notunu özetliyor...');
+    const data = await sendRequest('/api/summarize', 'Ders notu özetleniyor...');
     if (data && data.summary) {
         resultTitle.innerText = "📝 Ders Notu Özeti";
-        resultContent.innerHTML = `<div class="summary-text">${data.summary.replace(/\n/g, '<br>')}</div>`;
+        resultContent.innerHTML = `
+            <div class="summary-container">
+                ${data.summary.replace(/\n/g, '<br>')}
+            </div>
+        `;
     }
 });
 
 btnFlashcards.addEventListener('click', async () => {
-    const data = await sendRequest('/api/flashcards', 'Çalışma kartları (Flashcards) hazırlanıyor...');
+    const data = await sendRequest('/api/flashcards', 'Çalışma kartları hazırlanıyor...');
     if (data && data.flashcards) {
-        resultTitle.innerText = "🎴 Çalışma Kartları (Cevabı görmek için karta tıkla)";
+        resultTitle.innerText = "🎴 Çalışma Kartları (Çevirmek için tıklayın)";
         
         let cardsHTML = '<div class="flashcard-grid">';
         data.flashcards.forEach(card => {
@@ -74,7 +78,7 @@ btnFlashcards.addEventListener('click', async () => {
 });
 
 btnQuestions.addEventListener('click', async () => {
-    const data = await sendRequest('/api/questions', 'Test soruları oluşturuluyor...');
+    const data = await sendRequest('/api/questions', 'Test soruları hazırlanıyor...');
     if (data && data.questions) {
         resultTitle.innerText = "❓ Soru Bankası";
         
