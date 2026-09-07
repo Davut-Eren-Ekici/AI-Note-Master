@@ -51,3 +51,4 @@ Projeyi kendi bilgisayarınızda çalıştırmak için aşağıdaki adımları i
 1. **Repoyu klonlayın:**
    ```bash
    git clone [https://github.com/Davut-Eren-Ekici/AI-Note-Master.git](https://github.com/Davut-Eren-Ekici/AI-Note-Master.git)
+   
