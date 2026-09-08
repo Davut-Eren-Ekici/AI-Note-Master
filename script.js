@@ -1,5 +1,5 @@
 
-const BACKEND_URL = 'https://davut-eren-ekici.github.io/AI-Note-Master/';
+const BACKEND_URL = 'https://ai-note-master.onrender.com';
 
 const noteInput = document.getElementById('noteInput');
 const btnSummarize = document.getElementById('btnSummarize');

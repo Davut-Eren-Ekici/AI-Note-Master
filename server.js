@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-const { GoogleGenerativeAI } = require('@google/generative-ai');
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 dotenv.config();
 
@@ -10,12 +10,12 @@ console.log("Yüklenen API Key:", process.env.GEMINI_API_KEY ? "Mevcut (Key Okun
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-
 app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+// Gemini istemcisi başlatılıyor
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 
 // 1. ÖZET ÇIKARMA ENDPOINT'İ
 app.post('/api/summarize', async (req, res) => {
@@ -23,14 +23,13 @@ app.post('/api/summarize', async (req, res) => {
         const { noteText } = req.body;
         if (!noteText) return res.status(400).json({ error: "Lütfen bir ders notu girin." });
 
+        const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
         const prompt = `Aşağıdaki ders notunu analiz et. Önemli noktaları anlaşılır, düzenli ve maddeler halinde Türkçe olarak özetle:\n\n${noteText}`;
 
-        const response = await ai.models.generateContent({
-            model: 'gemini-3.6-flash',
-            contents: prompt,
-        });
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
+        const outputText = response.text();
 
-        const outputText = response.text || response.candidates?.[0]?.content?.parts?.[0]?.text;
         res.json({ success: true, summary: outputText });
     } catch (error) {
         console.error("Özet hatası detayı:", error);
@@ -44,6 +43,11 @@ app.post('/api/flashcards', async (req, res) => {
         const { noteText } = req.body;
         if (!noteText) return res.status(400).json({ error: "Lütfen bir ders notu girin." });
 
+        const model = genAI.getGenerativeModel({ 
+            model: 'gemini-1.5-flash',
+            generationConfig: { responseMimeType: "application/json" }
+        });
+
         const prompt = `Aşağıdaki ders notundan çalışma kartları (flashcard) oluştur. 
         Yanıtı SADECE aşağıdaki JSON formatında ver:
         [
@@ -53,14 +57,10 @@ app.post('/api/flashcards', async (req, res) => {
         Ders Notu:
         ${noteText}`;
 
-        const response = await ai.models.generateContent({
-            model: 'gemini-3.6-flash',
-            contents: prompt,
-            config: { responseMimeType: "application/json" }
-        });
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
+        const flashcards = JSON.parse(response.text());
 
-        const rawText = response.text || response.candidates?.[0]?.content?.parts?.[0]?.text;
-        const flashcards = JSON.parse(rawText);
         res.json({ success: true, flashcards });
     } catch (error) {
         console.error("Flashcard hatası detayı:", error);
@@ -73,6 +73,11 @@ app.post('/api/questions', async (req, res) => {
     try {
         const { noteText } = req.body;
         if (!noteText) return res.status(400).json({ error: "Lütfen bir ders notu girin." });
+
+        const model = genAI.getGenerativeModel({ 
+            model: 'gemini-1.5-flash',
+            generationConfig: { responseMimeType: "application/json" }
+        });
 
         const prompt = `Aşağıdaki ders notuna dayanarak 3 adet çoktan seçmeli soru hazırla.
         Yanıtı SADECE şu JSON formatında ver:
@@ -87,14 +92,10 @@ app.post('/api/questions', async (req, res) => {
         Ders Notu:
         ${noteText}`;
 
-        const response = await ai.models.generateContent({
-            model: 'gemini-3.6-flash',
-            contents: prompt,
-            config: { responseMimeType: "application/json" }
-        });
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
+        const questions = JSON.parse(response.text());
 
-        const rawText = response.text || response.candidates?.[0]?.content?.parts?.[0]?.text;
-        const questions = JSON.parse(rawText);
         res.json({ success: true, questions });
     } catch (error) {
         console.error("Soru üretme hatası detayı:", error);
