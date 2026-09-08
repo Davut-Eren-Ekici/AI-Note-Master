@@ -1,3 +1,6 @@
+
+const BACKEND_URL = 'https://davut-eren-ekici.github.io/AI-Note-Master/';
+
 const noteInput = document.getElementById('noteInput');
 const btnSummarize = document.getElementById('btnSummarize');
 const btnFlashcards = document.getElementById('btnFlashcards');
@@ -22,7 +25,8 @@ async function sendRequest(endpoint, message) {
     resultSection.classList.add('hidden');
 
     try {
-        const response = await fetch(endpoint, {
+      
+        const response = await fetch(`${BACKEND_URL}${endpoint}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ noteText })
@@ -34,7 +38,7 @@ async function sendRequest(endpoint, message) {
             resultSection.classList.remove('hidden');
             return data;
         } else {
-            alert("Hata: " + data.error);
+            alert("Hata: " + (data.error || "Bilinmeyen bir hata oluştu."));
         }
     } catch (err) {
         console.error(err);
