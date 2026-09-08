@@ -14,16 +14,15 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
 
-// Gemini istemcisi başlatılıyor
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 
-// 1. ÖZET ÇIKARMA ENDPOINT'İ
+
 app.post('/api/summarize', async (req, res) => {
     try {
         const { noteText } = req.body;
         if (!noteText) return res.status(400).json({ error: "Lütfen bir ders notu girin." });
 
-        const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+        const model = genAI.getGenerativeModel({ model: 'models/gemini-1.5-flash' });
         const prompt = `Aşağıdaki ders notunu analiz et. Önemli noktaları anlaşılır, düzenli ve maddeler halinde Türkçe olarak özetle:\n\n${noteText}`;
 
         const result = await model.generateContent(prompt);
@@ -44,7 +43,7 @@ app.post('/api/flashcards', async (req, res) => {
         if (!noteText) return res.status(400).json({ error: "Lütfen bir ders notu girin." });
 
         const model = genAI.getGenerativeModel({ 
-            model: 'gemini-1.5-flash',
+            model: 'models/gemini-1.5-flash',
             generationConfig: { responseMimeType: "application/json" }
         });
 
@@ -75,7 +74,7 @@ app.post('/api/questions', async (req, res) => {
         if (!noteText) return res.status(400).json({ error: "Lütfen bir ders notu girin." });
 
         const model = genAI.getGenerativeModel({ 
-            model: 'gemini-1.5-flash',
+            model: 'models/gemini-1.5-flash',
             generationConfig: { responseMimeType: "application/json" }
         });
 
