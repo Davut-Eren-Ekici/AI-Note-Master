@@ -22,7 +22,7 @@ app.post('/api/summarize', async (req, res) => {
         const { noteText } = req.body;
         if (!noteText) return res.status(400).json({ error: "Lütfen bir ders notu girin." });
 
-        const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+        const model = genAI.getGenerativeModel({ model: 'gemini-3.6-flash' });
         const prompt = `Aşağıdaki ders notunu analiz et. Önemli noktaları anlaşılır, düzenli ve maddeler halinde Türkçe olarak özetle:\n\n${noteText}`;
 
         const result = await model.generateContent(prompt);
@@ -43,7 +43,7 @@ app.post('/api/flashcards', async (req, res) => {
         if (!noteText) return res.status(400).json({ error: "Lütfen bir ders notu girin." });
 
         const model = genAI.getGenerativeModel({ 
-            model: 'gemini-2.5-flash',
+            model: 'gemini-3.6-flash',
             generationConfig: { responseMimeType: "application/json" }
         });
 
@@ -74,7 +74,7 @@ app.post('/api/questions', async (req, res) => {
         if (!noteText) return res.status(400).json({ error: "Lütfen bir ders notu girin." });
 
         const model = genAI.getGenerativeModel({ 
-            model: 'gemini-2.5-flash',
+            model: 'gemini-3.6-flash',
             generationConfig: { responseMimeType: "application/json" }
         });
 
