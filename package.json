@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "name": "ai-note-master",
   "version": "1.0.0",
   "main": "server.js",
@@ -6,9 +7,21 @@
     "start": "node server.js"
   },
   "dependencies": {
-    "express": "^4.19.2",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "@google/generative-ai": "^0.15.0"
-  }
+    "@google/generative-ai": "^0.15.0",
+    "cors": "^2.8.6",
+    "dotenv": "^16.6.1",
+    "express": "^4.22.3"
+  },
+  "description": "> Yapay zekâ destekli, dinamik ve kişiselleştirilebilir interaktif test/sınav hazırlama platformu.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Davut-Eren-Ekici/AI-Note-Master.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Davut-Eren-Ekici/AI-Note-Master/issues"
+  },
+  "homepage": "https://github.com/Davut-Eren-Ekici/AI-Note-Master#readme"
 }
