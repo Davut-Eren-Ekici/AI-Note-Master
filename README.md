@@ -14,41 +14,59 @@
 
 ## 📌 Proje Hakkında (About)
 
-**QuizCraft AI**, kullanıcıların belirlediği herhangi bir konu, soru sayısı ve zorluk seviyesine göre anında özgün test soruları üreten bir web uygulamasıdır. 
+# AI Note Master
 
-Uygulama, klasik ve jenerik AI şablonlarından uzak; modern **Fintech / SaaS** tasarım standartlarına uygun, zümrüt yeşili (`Emerald`) accent renkleri, responsive çift sütunlu kart yapısı ve arka planda çalışan dinamik canvas animasyonları ile geliştirilmiştir.
+Ders notlarını yapıştırın; yapay zekâ sizin için **özet**, **çalışma kartları (flashcard)** ve **çoktan seçmeli test soruları** üretsin.
 
----
+## Özellikler
 
-## ✨ Öne Çıkan Özellikler (Features)
+- 📝 **Özet çıkarma:** Notu maddeler halinde, önemli terimleri vurgulayarak özetler.
+- 🎴 **Flashcard üretimi:** Tıklayınca (veya klavyede Enter/Boşluk ile) çevrilen çalışma kartları.
+- ❓ **Soru bankası:** 3 çoktan seçmeli soru; seçimden sonra anında doğru/yanlış geri bildirimi.
+- 🛡️ **Dayanıklı altyapı:** Sunucu uyku modundan uyanırken otomatik tekrar deneme, zaman aşımı, giriş doğrulaması ve rate limit.
+- 📱 **Responsive** tasarım (CSS Grid / Flexbox, glassmorphism).
 
-- 🤖 **Yapay Zekâ Entegrasyonu:** Express/Node.js backend ve AI API servisleri üzerinden anlık soru üretimi.
-- 🎯 **Esnek Soru Konfigürasyonu:** Konu, soru sayısı (1-20) ve zorluk seviyesi (Kolay, Orta, Zor) seçimi.
-- ⚡ **İnteraktif Sınav Modu:** Dinamik ilerleme çubuğu (*progress bar*), anlık doğru/yanlış geri bildirimi ve puanlama mekanizması.
-- 🎨 **Modern & Özgün UI/UX:** Glassmorphism ve Modern Flat tasarım prensipleriyle optimize edilmiş kullanıcı arayüzü.
-- 🕸️ **Arka Plan Canvas Efekti:** Farenin hareketlerini takip eden dinamik Canvas/Math simülasyonu.
-- 📱 **Tam Tamına Responsive:** Mobil, tablet ve masaüstü cihazlar için %100 uyumlu CSS Grid/Flexbox mimarisi.
+## Teknolojiler
 
----
+**Frontend:** HTML5, CSS3 (Custom Properties, Flexbox, Grid), Vanilla JavaScript (ES6+, async/await)
 
-## 🛠️ Teknolojiler (Tech Stack)
+**Backend:** Node.js, Express.js, Google Gemini API (`@google/generative-ai`) — Render üzerinde barındırılır.
 
-### Frontend
-- **HTML5 & CSS3** (Custom Properties, Flexbox, CSS Grid)
-- **Vanilla JavaScript (ES6+)** (Async/Await, DOM Manipulation, Canvas API)
-- **Google Fonts** (*Plus Jakarta Sans*)
+## Kurulum
 
-### Backend & API
-- **Node.js & Express.js**
-- **RESTful API** (Render platformu üzerinde barındırılmaktadır)
+```bash
+npm install
+```
 
----
+Proje köküne bir `.env` dosyası oluşturun (**bu dosyayı asla GitHub'a yüklemeyin**, `.gitignore`'a ekleyin):
 
-## 🚀 Yerel Kurulum (Local Setup)
+```env
+GEMINI_API_KEY=buraya_api_anahtariniz
+# İsteğe bağlı
+GEMINI_MODEL=gemini-2.5-flash
+ALLOWED_ORIGIN=https://siteniz.example.com
+PORT=8080
+```
 
-Projeyi kendi bilgisayarınızda çalıştırmak için aşağıdaki adımları izleyebilirsiniz:
+Sunucuyu başlatın:
 
-1. **Repoyu klonlayın:**
-   ```bash
-   git clone [https://github.com/Davut-Eren-Ekici/AI-Note-Master.git](https://github.com/Davut-Eren-Ekici/AI-Note-Master.git)
-   
+```bash
+node server.js
+```
+
+Frontend için `script.js` içindeki `BACKEND_URL` değerini kendi sunucu adresinizle güncelleyin ve `index.html`'i açın.
+
+## API
+
+| Method | Endpoint | Gövde | Dönüş |
+|--------|----------|-------|-------|
+| POST | `/api/summarize` | `{ "noteText": "..." }` | `{ success, summary }` |
+| POST | `/api/flashcards` | `{ "noteText": "..." }` | `{ success, flashcards: [{front, back}] }` |
+| POST | `/api/questions` | `{ "noteText": "..." }` | `{ success, questions: [{question, options, answerIndex}] }` |
+| GET | `/health` | — | `{ ok: true }` |
+
+Sınırlar: not başına en fazla 20.000 karakter, IP başına dakikada 10 istek.
+
+## İletişim
+
+Davut Eren Ekici — [GitHub](https://github.com/Davut-Eren-Ekici)
